@@ -8,7 +8,7 @@ CONFIG="config/${CFG}/${CFG}.py"
 WORK_DIR="exp/${CFG}"
 EVALUATOR="config/${CFG}/eval_v1.py"
 
-EPOCH="${EPOCH:-20}"
+EPOCH="${EPOCH:-7}"
 CKPT="${CKPT:-${WORK_DIR}/checkpoints/epoch_${EPOCH}.pth}"
 GPUS="${GPUS:-0,1,2,3}"
 MASTER_PORT="${MASTER_PORT:-21875}"

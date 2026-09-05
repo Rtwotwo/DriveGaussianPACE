@@ -9,7 +9,7 @@ CONFIG="config/${SRC_CFG}/${SRC_CFG}.py"
 WORK_DIR="exp/${EXP_NAME}"
 EPOCH="${EPOCH:-15}"
 CKPT="${CKPT:-${WORK_DIR}/checkpoints/epoch_${EPOCH}.pth}"
-LOG_NAME="${LOG_NAME:-test_epoch${EPOCH}}"
+LOG_NAME="${LOG_NAME:-test_epoch${EPOCH}}_v1"
 GPUS="${GPUS:-0,1,2,3}"
 PORT="${MASTER_PORT:-20781}"
 
