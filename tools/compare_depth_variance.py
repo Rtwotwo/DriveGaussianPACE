@@ -6,7 +6,7 @@ This directly measures whether ConcLoss achieved its optimization target:
 lower Var[z] = sharper depth distribution along each ray.
 
 Usage (on h20-old):
-    /data/chenz/conda_env/splatting/bin/python tools/compare_depth_variance.py
+    python tools/compare_depth_variance.py
 
 No training code is modified. This loads:
   - val pkl (camera params)
@@ -24,8 +24,8 @@ from pathlib import Path
 
 # ─── Config ───────────────────────────────────────────────────────────
 PKL_PATH = "data/nuscenes_cam/nuscenes_infos_val_gaussian_ad_v4.pkl"
-PSEUDO_DEPTH_ROOT = "/data/chenz/Gaussianflowocc_test/data/metric_3d_nusc"
-PSEUDO_SEG_ROOT = "/data/chenz/Gaussianflowocc_test/data/grounded_sam_nusc"
+PSEUDO_DEPTH_ROOT = "data/pseudo_labels/metric_3d_nusc"
+PSEUDO_SEG_ROOT = "data/pseudo_labels/grounded_sam_nusc"
 
 CHECKPOINTS = {
     "ft_depth": "out/nuscenes_gs25600_base_ft_depth/vis/val_0_gaussian_attr.pth",
@@ -218,7 +218,7 @@ def compute_stats(rendered_var, rendered_depth, rendered_acc, pseudo_depth=None)
 
 def main():
     # cd to project root
-    project_root = os.environ.get('PROJECT_ROOT', '/data/chenz/GaussianAD')
+    project_root = os.environ.get('PROJECT_ROOT', str(Path(__file__).resolve().parents[1]))
     os.chdir(project_root)
     print(f"Working dir: {os.getcwd()}")
     

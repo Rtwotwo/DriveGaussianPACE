@@ -6,7 +6,6 @@
 # 目的：测试 futattn 模型的 future occ 指标（FutAvg），验证「未来帧高斯注意力」
 #       是否让 planner 更显式感知高斯运动、进一步改善未来帧占用。
 #
-# 机器：h20-new  ssh -p 30300 root@8.130.174.55
 # GPU ：4,5,6,7（该机只允许使用后四张）
 # 用法：bash config/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futattn/test.sh
 #       （建议 tmux：tmux new -s test_v12_futattn）
@@ -15,8 +14,8 @@ set -euo pipefail
 
 SRC_CFG="nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futattn"
 EXP_NAME="nuscenes_gs25600_v12_fixempty_ft_plan_futattn"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${SRC_CFG}/${SRC_CFG}.py"
 WORK_DIR="exp/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

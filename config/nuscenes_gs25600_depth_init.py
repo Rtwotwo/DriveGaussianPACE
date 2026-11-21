@@ -149,7 +149,7 @@ _dim_ = 256
 _pos_dim_ = _dim_//2
 
 # depth init root (Metric3D pseudo depth on H20)
-_depth_init_root = '/data/chenz/Gaussianflowocc_test/data/metric_3d_nusc'
+_depth_init_root = 'data/pseudo_labels/metric_3d_nusc'
 
 val_dataset_config = dict(
     imageset='data/nuscenes_cam/nuscenes_infos_val_gaussian_ad_v4.pkl',

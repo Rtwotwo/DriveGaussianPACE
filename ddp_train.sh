@@ -1,4 +1,6 @@
-sh -c 'echo "MP_STATUS_CHECK_INTERVAL = 1.0" >> /usr/local/lib/python3.8/dist-packages/torch/utils/data/_utils/__init__.py'
+#!/usr/bin/env bash
+set -e
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 export OMP_NUM_THREADS=1
@@ -31,8 +33,8 @@ then
             -c cudaProfilerApi \
             --capture-range-end=stop \
             -o ${LPAI_MODEL_DIR}/profile_%q{RANK}_%p.nsys-rep \
-            torchrun $DISTRIBUTED_ARGS train.py $@;
+            torchrun $DISTRIBUTED_ARGS train.py "$@"
 else
     echo "command = [torchrun $MAX_RESTART $DISTRIBUTED_ARGS train.py $@]"
-    torchrun $MAX_RESTART $DISTRIBUTED_ARGS train.py $@
+    torchrun $MAX_RESTART $DISTRIBUTED_ARGS train.py "$@"
 fi

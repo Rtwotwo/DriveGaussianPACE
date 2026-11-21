@@ -11,8 +11,8 @@
   （scene_<token>/），便于横向对比。
 
 [1] nuscenes_gs25600_base_plan_new（base planner 基线，物理 GPU0）
-cd /data/xinyao/navsim_workspace/GaussianAD
-/data/chenz/conda_env/splatting/bin/python tools/viz/visualize_occ_map_plan_results.py \
+# Run from the repository root.
+python tools/viz/visualize_occ_map_plan_results.py \
     --py-config config/nuscenes_gs25600_base_plan_new/nuscenes_gs25600_base_plan_new.py \
     --work-dir exp/nuscenes_gs25600_base_plan_new \
     --resume-from exp/nuscenes_gs25600_base_plan_new/checkpoints/epoch_15.pth \
@@ -24,8 +24,8 @@ cd /data/xinyao/navsim_workspace/GaussianAD
 [2] nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual（v12 fut-attn global-residual，物理 GPU1）
 注意：cumm/spconv 在非 cuda:0 设备号上会崩溃（CUDA illegal memory access），
 必须用 CUDA_VISIBLE_DEVICES=<物理卡> 把目标卡映射为进程内 cuda:0。
-cd /data/xinyao/navsim_workspace/GaussianAD
-CUDA_VISIBLE_DEVICES=1 /data/chenz/conda_env/splatting/bin/python tools/viz/visualize_occ_map_plan_results.py \
+# Run from the repository root.
+CUDA_VISIBLE_DEVICES=1 python tools/viz/visualize_occ_map_plan_results.py \
     --py-config config/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futattn_global_residual/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futattn_global_residual.py \
     --work-dir exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual \
     --resume-from exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth \
@@ -35,9 +35,9 @@ CUDA_VISIBLE_DEVICES=1 /data/chenz/conda_env/splatting/bin/python tools/viz/visu
     --out-dir exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/vis_occ_map_plan_results_cmp
 
 [3] nuscenes_gs25600_v14_ft_plan_residual_ddim（v14 residual-DDIM，物理 GPU2，需 VERIFIED_V12_CHECKPOINT）
-cd /data/xinyao/navsim_workspace/GaussianAD
-export VERIFIED_V12_CHECKPOINT=/data/xinyao/navsim_workspace/GaussianAD/exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth
-CUDA_VISIBLE_DEVICES=2 /data/chenz/conda_env/splatting/bin/python tools/viz/visualize_occ_map_plan_results.py \
+# Run from the repository root.
+export VERIFIED_V12_CHECKPOINT=exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth
+CUDA_VISIBLE_DEVICES=2 python tools/viz/visualize_occ_map_plan_results.py \
     --py-config config/nuscenes_gs25600_gtbox_oracle_v14_ft_plan_residual_ddim/nuscenes_gs25600_gtbox_oracle_v14_ft_plan_residual_ddim.py \
     --work-dir exp/nuscenes_gs25600_v14_ft_plan_residual_ddim \
     --resume-from exp/nuscenes_gs25600_v14_ft_plan_residual_ddim/checkpoints/epoch_15.pth \
@@ -57,7 +57,7 @@ CUDA_VISIBLE_DEVICES=2 /data/chenz/conda_env/splatting/bin/python tools/viz/visu
 #!/usr/bin/env python3
 
 # 确保 import model / dataset 解析到当前工作区（而非 sys.path 里残留的
-# /data/chenz/GaussianAD 等旧路径）
+# the original checkout 等旧路径）
 import os
 import sys as _sys
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -964,7 +964,7 @@ if __name__ == "__main__":
 #!/usr/bin/env python3
 
 # 确保 import model / dataset 解析到当前工作区（而非 sys.path 里残留的
-# /data/chenz/GaussianAD 等旧路径）
+# the original checkout 等旧路径）
 import os
 import sys as _sys
 _HERE = os.path.dirname(os.path.abspath(__file__))

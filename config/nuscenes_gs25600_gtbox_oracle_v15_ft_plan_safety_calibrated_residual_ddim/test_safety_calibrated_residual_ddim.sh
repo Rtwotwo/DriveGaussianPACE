@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-REPO="${REPO:-/data/xinyao/navsim_workspace/GaussianAD}"
-PYTHON="${PYTHON:-/data/chenz/conda_env/splatting/bin/python}"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PYTHON="${PYTHON:-python}"
 CONFIG="config/nuscenes_gs25600_gtbox_oracle_v15_ft_plan_safety_calibrated_residual_ddim/nuscenes_gs25600_gtbox_oracle_v15_ft_plan_safety_calibrated_residual_ddim.py"
 VERIFIED_V12_CHECKPOINT="${VERIFIED_V12_CHECKPOINT:-${REPO}/exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth}"
 WORK_DIR="${WORK_DIR:-exp/nuscenes_gs25600_v15b_ft_plan_collision_guarded_residual_ddim}"
@@ -13,7 +13,7 @@ GPUS="${GPUS:-4,5,6,7}"
 MASTER_PORT="${MASTER_PORT:-20796}"
 export VERIFIED_V12_CHECKPOINT
 
-if [[ ! -d "${REPO}" || ! -x "${PYTHON}" ]]; then
+if [[ ! -d "${REPO}" ]] || ! command -v "${PYTHON}" >/dev/null; then
   echo "Invalid REPO/PYTHON: ${REPO} / ${PYTHON}" >&2
   exit 2
 fi

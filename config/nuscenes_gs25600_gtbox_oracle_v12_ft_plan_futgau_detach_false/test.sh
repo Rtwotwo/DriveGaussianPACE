@@ -7,7 +7,6 @@
 # 目的：测试 futgau 模型的 future occ 指标（FutAvg）与 planner 指标（L2/col），
 #       验证「未来帧高斯正常融合」是否在不损害 planner 的前提下改善未来帧占用。
 #
-# 机器：h20-new  ssh -p 30300 root@8.130.174.55
 # GPU ：0,1,2,3
 # 用法：bash config/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futgau/test.sh
 #       （建议 tmux：tmux new -s test_v12_futgau）
@@ -16,8 +15,8 @@ set -euo pipefail
 
 SRC_CFG="nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futgau_detach_false"
 EXP_NAME="nuscenes_gs25600_v12_fixempty_ft_plan_futgau_detach_false"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${SRC_CFG}/${SRC_CFG}.py"
 WORK_DIR="exp/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

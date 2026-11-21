@@ -10,6 +10,9 @@ ckpts/
 # Training outputs
 out/
 *.log
+*.pth
+*.ckpt
+*.pt
 
 # Build artifacts
 build/
@@ -17,6 +20,7 @@ build/
 
 # Compiled Python and caches
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *$py.class
 *.so
@@ -26,4 +30,3 @@ __pycache__/
 .idea/
 .conda/
 clones/
-assets/

@@ -8,7 +8,6 @@
 #       （旧 base15=14.15 训练于 6/16-6/23，用冻结 planner 的 ego_fut_preds≈0，
 #         未来帧口径与 v4+ 不可比。）
 #
-# 机器：h20-new  ssh -p 32344 root@8.130.174.55
 # GPU ：4,5,6,7（该机只允许使用后四张，0-3 严禁使用）
 # 用法：bash config/nuscenes_gs25600_base_gt_ego/test.sh
 #       （建议 tmux：tmux new -s test_base_gt_ego）
@@ -16,8 +15,8 @@
 set -euo pipefail
 
 EXP_NAME="nuscenes_gs25600_base_gt_ego"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${EXP_NAME}/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

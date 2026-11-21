@@ -1,0 +1,4 @@
+# Omit internal research notes from source release archives.
+/docs/archive export-ignore
+/research export-ignore
+/tools/scratch export-ignore

@@ -12,15 +12,14 @@
 # 注：测试时 current_epoch 不传 → warmup 不生效 → 直接用 planner 预测轨迹，
 #     与"部署闭环"语义一致。
 #
-# GPU：h20-new  ssh -p 32344 root@8.130.174.55（前 4 张严禁使用）
 # 用法：tmux new -s test_base_plan_new
 #       bash config/nuscenes_gs25600_base_plan_new/test.sh
 # ============================================================================
 set -euo pipefail
 
 EXP_NAME="nuscenes_gs25600_base_plan_new"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${EXP_NAME}/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

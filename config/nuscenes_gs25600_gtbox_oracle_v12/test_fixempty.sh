@@ -12,7 +12,6 @@
 # 注：推理路径同样走 bugfix 代码（flow_include_empty 默认 True），
 #     即"用修改过 bug 后的代码测试"。
 #
-# 机器：h20-new  ssh -p 32344 root@8.130.174.55
 # GPU ：4,5,6,7（前 4 张严禁使用）
 # 用法：tmux new -s test_v12_fixempty
 #       bash config/nuscenes_gs25600_gtbox_oracle_v12/test_fixempty.sh
@@ -21,8 +20,8 @@ set -euo pipefail
 
 SRC_CFG="nuscenes_gs25600_gtbox_oracle_v12"
 EXP_NAME="nuscenes_gs25600_v12_fixempty"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${SRC_CFG}.py"
 WORK_DIR="out/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CFG_NAME="nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
 CFG_DIR="${REPO}/config/${CFG_NAME}"
 WORK_DIR="${REPO}/exp/${CFG_NAME}"
 

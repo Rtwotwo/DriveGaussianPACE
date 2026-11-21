@@ -3,8 +3,8 @@ set -euo pipefail
 
 CFG_NAME="nuscenes_gs25600_v16_ft_plan_frozen_occ_truncated_ddim"
 EXP_NAME="${EXP_NAME:-${CFG_NAME}}"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-PYTHON="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PYTHON="${PYTHON:-python}"
 CONFIG="config/${CFG_NAME}/${CFG_NAME}.py"
 WORK_DIR="exp/${EXP_NAME}"
 BASE_INIT="exp/nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full/checkpoints/epoch_16.pth"

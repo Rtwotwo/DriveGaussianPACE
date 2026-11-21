@@ -3,7 +3,7 @@ render_mode_compare.py — 对比 RGB+D vs RGB+ED 渲染效果，不影响训练
 每张结果图列顺序: [GT_sem | GT_depth | sem(D) | sem(ED) | dep(D) | dep(ED) | |ED-D|]
 
 运行（远端 GPU 6，不占用训练 GPU 0-5）:
-    CUDA_VISIBLE_DEVICES=6 /data/chenz/conda_env/splatting/bin/python \\
+    CUDA_VISIBLE_DEVICES=6 python \\
         tools/viz/render_mode_compare.py \\
         --py-config config/nuscenes_gs25600_2D.py \\
         --work-dir out/nuscenes_gs25600_2D \\

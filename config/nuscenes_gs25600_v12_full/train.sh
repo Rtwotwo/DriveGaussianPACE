@@ -13,20 +13,19 @@
 set -euo pipefail
 
 EXP_NAME="nuscenes_gs25600_v12_full"
-REPO="/data/chenz/GaussianAD"
-ENV_DIR="/data/chenz/conda_env/splatting"
-PY="${ENV_DIR}/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-torchrun}"
 CONFIG="config/${EXP_NAME}/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 GPUS="0,1,2,3,4,5,6,7"
 NPROC=8
 MASTER_PORT=12345
 
-if [[ ! -x "${PY}" ]]; then
-  echo "[FATAL] Training environment not found: ${ENV_DIR}" >&2
+if ! command -v "${PY}" >/dev/null; then
+  echo "[FATAL] Training executable not found: ${PY}" >&2
   exit 1
 fi
-export PATH="${ENV_DIR}/bin:${PATH}"
+
 
 cd "${REPO}"
 mkdir -p "${WORK_DIR}"

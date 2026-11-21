@@ -18,7 +18,6 @@
 #         "修复后放开 B 路是否更好"由并行的 base_gt_ego_fixempty
 #         （flow_grad_scale=1.0）回答，无需在主力实验上冒险。
 #
-# 机器：h20-new  ssh -p 32344 root@8.130.174.55
 # GPU ：4,5,6,7（前 4 张严禁使用）
 # 用法：tmux new -s train_v12_fixempty
 #       bash config/nuscenes_gs25600_gtbox_oracle_v12/train_fixempty.sh
@@ -29,8 +28,8 @@ set -euo pipefail
 
 SRC_CFG="nuscenes_gs25600_gtbox_oracle_v12"
 EXP_NAME="nuscenes_gs25600_v12_fixempty"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-torchrun}"
 CONFIG="config/${SRC_CFG}.py"
 WORK_DIR="out/${EXP_NAME}"
 GPUS="4,5,6,7"

@@ -314,7 +314,10 @@ class DynamicFocalPruningConv(spconv.SparseModule):
         map_vir = cm.get_cmap(name='viridis')
         color = map_vir(norm_dense_map_np)
         plt.imshow(color)
-        plt.savefig("/data/home/jianhuiliu/newData/Research/CVMI-3D-Pruning/3d-detect-pruning-develop/output/visual/plot_" + self.indice_key+ "_" + str(x.features.shape[0]) + "_.png")
+        from pathlib import Path
+        output_dir = Path("out/visual")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        plt.savefig(output_dir / f"plot_{self.indice_key}_{x.features.shape[0]}_.png")
 
     def forward(self, x, batch_dict):
         # reset pruning ratio

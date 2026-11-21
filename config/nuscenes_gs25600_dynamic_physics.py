@@ -212,8 +212,8 @@ train_dataset_config = dict(
     pc_range=pc_range,
     num_frames=4,
     # pseudo-label
-    metric3d_root='/data/chenz/Gaussianflowocc_test/data/metric_3d_nusc',
-    grounded_sam_root='/data/chenz/Gaussianflowocc_test/data/grounded_sam_nusc',
+    metric3d_root='data/pseudo_labels/metric_3d_nusc',
+    grounded_sam_root='data/pseudo_labels/grounded_sam_nusc',
     pseudo_label_scale=0.44,
     max_pseudo_depth=40.0,
     pseudo_label_crop_top=140,

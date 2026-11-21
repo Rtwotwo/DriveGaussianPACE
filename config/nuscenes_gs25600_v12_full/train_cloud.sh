@@ -6,7 +6,7 @@
 # 支持单机多卡与多机多卡；本地/H20 直接跑也可（PET_* 缺省时退化为单机全卡）。
 #
 # 平台「训练配置」里填：
-#   cd /data/chenz/GaussianAD && bash config/nuscenes_gs25600_v12_full/train_cloud.sh
+#   bash config/nuscenes_gs25600_v12_full/train_cloud.sh
 #
 # 可用环境变量覆盖：REPO / PY / DATA_ROOT / CKPT_ROOT
 # ============================================================================
@@ -35,8 +35,8 @@ fi
 
 # ── 3. 路径 ────────────────────────────────────────────────────────────────
 EXP_NAME="nuscenes_gs25600_v12_full"
-REPO="${REPO:-/data/chenz/GaussianAD}"
-PY="${PY:-/data/chenz/conda_env/splatting/bin/torchrun}"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-torchrun}"
 CONFIG="config/${EXP_NAME}/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 

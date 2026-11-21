@@ -13,8 +13,8 @@ set -euo pipefail
 
 SRC_CFG="nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futgau_detach_false_time"
 EXP_NAME="nuscenes_gs25600_v12_fixempty_ft_plan_futgau_detach_false_time"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/nuscenes_gs25600_gtbox_oracle_v12_futgau_costime/${SRC_CFG}.py"
 WORK_DIR="exp/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

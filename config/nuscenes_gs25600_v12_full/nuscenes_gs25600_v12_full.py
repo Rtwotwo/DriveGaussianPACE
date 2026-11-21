@@ -9,7 +9,6 @@ nuscenes_gs25600_v12_full —— v12（empty-gaussian bugfix 之后）的全量�
 模型结构、loss 权重、GT-box oracle 门控、flow_grad_scale=0.0 等全部原样继承 v12，
 不做任何改动；代码侧含 empty-gaussian bugfix（cfb1356，flow_include_empty=True）。
 
-机器：h20-old  ssh -p 30300 root@8.130.174.55，GPU 4,5,6,7
 """
 
 _base_ = ['../nuscenes_gs25600_gtbox_oracle_v12.py']

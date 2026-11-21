@@ -11,7 +11,6 @@
 #   base_flowcut          (flow_grad_scale=0.0, 无 Dyn/Phys)  ← 本实验
 #   v12_fixempty          (flow_grad_scale=0.0, 有 Dyn/Phys + gtbox)  current 17.577 / FutAvg 10.92
 #
-# 机器：h20-new  ssh -p 32344 root@8.130.174.55
 # GPU ：4,5,6,7（前 4 张严禁使用）
 # 用法：tmux new -s train_base_flowcut
 #       bash config/nuscenes_gs25600_base_flowcut/train.sh
@@ -19,8 +18,8 @@
 set -euo pipefail
 
 EXP_NAME="nuscenes_gs25600_base_flowcut"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-torchrun}"
 CONFIG="config/${EXP_NAME}/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 GPUS="4,5,6,7"

@@ -3,8 +3,8 @@ set -euo pipefail
 
 SRC_CFG="nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futattn_global_residual"
 EXP_NAME="nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${SRC_CFG}/${SRC_CFG}.py"
 WORK_DIR="exp/${EXP_NAME}"
 EPOCH="${EPOCH:-15}"

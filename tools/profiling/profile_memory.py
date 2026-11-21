@@ -3,7 +3,7 @@ Sub-module level Memory & Time Profiling for GaussianAD (splatting branch).
 Instruments each stage of the forward pass and reports per-module memory/time.
 
 Usage:
-    CUDA_VISIBLE_DEVICES=4 /data/chenz/conda_env/splatting/bin/python tools/profiling/profile_memory.py \
+    CUDA_VISIBLE_DEVICES=4 python tools/profiling/profile_memory.py \
         --py-config config/nuscenes_gs25600.py --num-iters 3
 """
 import time

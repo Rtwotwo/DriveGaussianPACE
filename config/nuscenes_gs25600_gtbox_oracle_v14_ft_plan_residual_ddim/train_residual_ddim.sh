@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-REPO="${REPO:-/data/xinyao/navsim_workspace/GaussianAD}"
-PYTHON="${PYTHON:-/data/chenz/conda_env/splatting/bin/python}"
-TORCHRUN="${TORCHRUN:-/data/chenz/conda_env/splatting/bin/torchrun}"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PYTHON="${PYTHON:-python}"
+TORCHRUN="${TORCHRUN:-torchrun}"
 CONFIG="config/nuscenes_gs25600_gtbox_oracle_v14_ft_plan_residual_ddim/nuscenes_gs25600_gtbox_oracle_v14_ft_plan_residual_ddim.py"
 BASELINE_CHECKPOINT="exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth"
 WORK_DIR="${WORK_DIR:-exp/nuscenes_gs25600_v14_ft_plan_residual_ddim}"
@@ -21,11 +21,11 @@ if [[ ! -d "${REPO}" ]]; then
   echo "Repository does not exist: ${REPO}" >&2
   exit 2
 fi
-if [[ ! -x "${PYTHON}" ]]; then
+if ! command -v "${PYTHON}" >/dev/null; then
   echo "Python is not executable: ${PYTHON}" >&2
   exit 2
 fi
-if [[ ! -x "${TORCHRUN}" ]]; then
+if ! command -v "${TORCHRUN}" >/dev/null; then
   echo "torchrun is not executable: ${TORCHRUN}" >&2
   exit 2
 fi

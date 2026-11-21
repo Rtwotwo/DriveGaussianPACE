@@ -1,8 +1,8 @@
 """
 分析 nuscenes_gs25600_4gpu_v4 模型生成的 Gaussian 透明度（opacity）分布。
 用法（远端 H20）：
-  cd /data/chenz/GaussianAD
-  CUDA_VISIBLE_DEVICES=0 /data/chenz/conda_env/GaussianAD/bin/python \
+  # Run from the repository root.
+  CUDA_VISIBLE_DEVICES=0 python \
       tools/viz/analyze_opacity.py \
       --py-config config/nuscenes_gs25600.py \
       --work-dir out/nuscenes_gs25600_4gpu_v4 \

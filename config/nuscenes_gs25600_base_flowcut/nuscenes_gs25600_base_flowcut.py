@@ -35,7 +35,6 @@ seed=42、冻结 map_decoder+planner_head、max_epochs=15）与 base_gt_ego 完�
 【注】empty-gaussian bugfix (cfb1356, flow_include_empty 默认 True) 已在代码中生效，
 与 v12_fixempty / base_gt_ego_fixempty 同口径，三者可直接横向对比。
 
-机器：h20-new  ssh -p 32344 root@8.130.174.55，GPU 4,5,6,7。启动见同目录 train.sh。
 """
 
 _base_ = ['../nuscenes_gs25600_base_gt_ego/nuscenes_gs25600_base_gt_ego.py']

@@ -212,7 +212,7 @@ class PlanningMetric():
         #     plt.imshow(segmentation[i])
         #     plt.subplot(2,T,i+1+T)
         #     plt.imshow(pedestrian[i])
-        # plt.savefig('/home/users/qing01.xu/bevformer/debug_figs/car_ped_occ.jpg')
+        # plt.savefig('debug_figs/car_ped_occ.jpg')
         # plt.close()
 
         return segmentation, pedestrian
@@ -304,9 +304,9 @@ class PlanningMetric():
         #     plt.subplot(2,6,i+7)
         #     plt.imshow(ego_occ[i])
         # if input_gt:
-        #     plt.savefig('/home/users/qing01.xu/bevformer/debug_figs/occ_metric_stp3_gt.jpg')
+        #     plt.savefig('debug_figs/occ_metric_stp3_gt.jpg')
         # else:
-        #     plt.savefig('/home/users/qing01.xu/bevformer/debug_figs/occ_metric_stp3_pred.jpg')
+        #     plt.savefig('debug_figs/occ_metric_stp3_pred.jpg')
         # plt.close()
 
         return torch.from_numpy(collision).to(device=traj.device)

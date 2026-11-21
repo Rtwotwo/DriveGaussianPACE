@@ -61,7 +61,7 @@ candidate zero。
 ## 唯一允许的续训来源
 
 ```text
-/data/xinyao/navsim_workspace/GaussianAD/exp/
+exp/
   nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/
   checkpoints/epoch_15.pth
 ```
@@ -74,13 +74,13 @@ planner 以外模型、12 个 legacy losses、optimizer/LR/scheduler、grad clip
 ## 验证与启动
 
 ```bash
-cd /data/xinyao/navsim_workspace/GaussianAD
-export VERIFIED_V12_CHECKPOINT=/data/xinyao/navsim_workspace/GaussianAD/exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth
+# Run from the repository root.
+export VERIFIED_V12_CHECKPOINT=exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth
 
-/data/chenz/conda_env/splatting/bin/python \
+python \
   config/nuscenes_gs25600_gtbox_oracle_v15_ft_plan_safety_calibrated_residual_ddim/validate_v15.py
 
-/data/chenz/conda_env/splatting/bin/python \
+python \
   config/nuscenes_gs25600_gtbox_oracle_v15_ft_plan_safety_calibrated_residual_ddim/validate_v15_data.py
 
 DRY_RUN=1 VALIDATE_FIRST=0 \

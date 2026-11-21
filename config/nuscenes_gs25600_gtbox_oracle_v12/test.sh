@@ -7,7 +7,6 @@
 #       但训练期不计算未来占据。本测试用于拿到 future occ 指标（FutAvg），
 #       验证 P1 的核心权衡：当前帧大涨的同时，未来帧是否守住 6.57。
 #
-# 机器：h20-new  ssh -p 32344 root@8.130.174.55
 # GPU ：4,5,6,7（该机只允许使用后四张）
 # 用法：bash config/nuscenes_gs25600_gtbox_oracle_v12/test.sh
 #       （建议 tmux：tmux new -s test_v12）
@@ -18,8 +17,8 @@
 set -euo pipefail
 
 EXP_NAME="nuscenes_gs25600_gtbox_oracle_v12"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-python}"
 CONFIG="config/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 CKPT="${WORK_DIR}/checkpoints/epoch_15.pth"

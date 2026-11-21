@@ -3,11 +3,13 @@ set -euo pipefail
 
 CFG_NAME="nuscenes_gs25600_v3_se3_full"
 EXP_NAME="${CFG_NAME}"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-TORCHRUN="/data/chenz/conda_env/splatting/bin/torchrun"
-PYTHON="/data/chenz/conda_env/splatting/bin/python"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+cd "${REPO}"
+export PYTHONPATH="${PWD}${PYTHONPATH:+:${PYTHONPATH}}"
+TORCHRUN="${TORCHRUN:-torchrun}"
+PYTHON="${PYTHON:-python}"
 CONFIG="config/${CFG_NAME}/${CFG_NAME}.py"
-WORK_DIR="exp/${EXP_NAME}"
+WORK_DIR="${WORK_DIR:-exp/${EXP_NAME}}"
 
 # Accept both the standard variables and the PET_* variables injected by the
 # cloud platform. This Stage-1 configuration is intentionally fixed to one
@@ -31,7 +33,6 @@ if (( ${#GPU_IDS[@]} != 8 )); then
   exit 2
 fi
 
-cd "${REPO}"
 mkdir -p "${WORK_DIR}"
 
 VISIBLE_GPUS=$(CUDA_VISIBLE_DEVICES="${GPUS}" "${PYTHON}" -c 'import torch; print(torch.cuda.device_count())')
@@ -56,8 +57,8 @@ unset RANK WORLD_SIZE LOCAL_RANK
   echo "distributed: nnodes=${NNODES}, node_rank=${NODE_RANK}, nproc=${NPROC}"
   echo "rendezvous : ${MASTER_ADDR}:${MASTER_PORT}"
   echo "gpus       : ${GPUS}"
-  echo "git branch : $(git rev-parse --abbrev-ref HEAD)"
-  echo "git commit : $(git rev-parse HEAD)"
+  echo "git branch : $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo unavailable)"
+  echo "git commit : $(git rev-parse HEAD 2>/dev/null || echo unavailable)"
 } | tee -a "${WORK_DIR}/launch_history.log"
 
 CUDA_VISIBLE_DEVICES="${GPUS}" PYTHONUNBUFFERED=1 "${TORCHRUN}" \

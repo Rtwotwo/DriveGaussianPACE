@@ -11,7 +11,7 @@ slider, 3D orbit/zoom, translucent trajectory "light rays", and current
 instantaneous-velocity reference rays for comparison.
 
 Example (run on the H20 server):
-    /data/chenz/conda_env/splatting/bin/python \
+    python \
         tools/viz/plot_gtbox_future_anim.py \
         --pkl data/nuscenes_cam/nuscenes_infos_val_gaussian_ad_v4.pkl \
         --index -1 --out viz_gtbox/gt_tracks_auto.html

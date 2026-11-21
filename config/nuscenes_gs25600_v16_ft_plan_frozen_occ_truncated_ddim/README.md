@@ -73,8 +73,7 @@ fails if either conversion line is disabled.
 ## Validate and train
 
 ```bash
-cd /data/xinyao/navsim_workspace/GaussianAD
-
+# Run from the repository root.
 export STRONG_OCC_CHECKPOINT=exp/nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full/checkpoints/epoch_16.pth
 python config/nuscenes_gs25600_v16_ft_plan_frozen_occ_truncated_ddim/validate_v16.py --build-model
 

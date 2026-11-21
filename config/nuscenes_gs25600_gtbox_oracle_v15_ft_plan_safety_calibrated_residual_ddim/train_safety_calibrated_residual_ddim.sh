@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-REPO="${REPO:-/data/xinyao/navsim_workspace/GaussianAD}"
-PYTHON="${PYTHON:-/data/chenz/conda_env/splatting/bin/python}"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PYTHON="${PYTHON:-python}"
 CONFIG="config/nuscenes_gs25600_gtbox_oracle_v15_ft_plan_safety_calibrated_residual_ddim/nuscenes_gs25600_gtbox_oracle_v15_ft_plan_safety_calibrated_residual_ddim.py"
 V12_CHECKPOINT="exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth"
 WORK_DIR="${WORK_DIR:-exp/nuscenes_gs25600_v15b_ft_plan_collision_guarded_residual_ddim}"
@@ -19,7 +19,7 @@ if [[ ! -d "${REPO}" ]]; then
   echo "Repository does not exist: ${REPO}" >&2
   exit 2
 fi
-if [[ ! -x "${PYTHON}" ]]; then
+if ! command -v "${PYTHON}" >/dev/null; then
   echo "Python is not executable: ${PYTHON}" >&2
   exit 2
 fi

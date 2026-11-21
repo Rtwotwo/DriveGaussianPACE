@@ -9,16 +9,16 @@ import torch
 
 
 DEFAULT_OCC = Path(
-    '/data/chenz/GaussianAD/out/nuscenes_gs25600_v3_se3/'
+    'out/nuscenes_gs25600_v3_se3/'
     'checkpoints/epoch_15.pth'
 )
 DEFAULT_PLANNER = Path(
-    '/data/xinyao/navsim_workspace/GaussianAD/exp/'
+    'exp/'
     'nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/'
     'checkpoints/epoch_15.pth'
 )
 DEFAULT_OUTPUT = Path(
-    '/data/xinyao/navsim_workspace/GaussianAD/exp/'
+    'exp/'
     'nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full/init/'
     'v3_se3_occ_plus_futattn_global_residual_planner_epoch15.pth'
 )

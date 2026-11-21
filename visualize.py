@@ -1,11 +1,10 @@
 """
-cd /data/xinyao/navsim_workspace/GaussianAD
-
+# Run from the repository root.
 export CUDA_VISIBLE_DEVICES=4,5
-/data/chenz/conda_env/splatting/bin/python visualize.py \
-    --py-config /data/xinyao/navsim_workspace/GaussianAD/config/nuscenes_gs25600_v12_fixempty_ft_plan_timequery_residual/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_timequery_residual.py \
-    --work-dir /data/xinyao/navsim_workspace/GaussianAD/exp/nuscenes_gs25600_v12_fixempty_ft_plan_timequery_residual \
-    --resume-from /data/xinyao/navsim_workspace/GaussianAD/exp/nuscenes_gs25600_v12_fixempty_ft_plan_timequery_residual/checkpoints/epoch_15.pth \
+python visualize.py \
+    --py-config config/nuscenes_gs25600_v12_fixempty_ft_plan_timequery_residual/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_timequery_residual.py \
+    --work-dir exp/nuscenes_gs25600_v12_fixempty_ft_plan_timequery_residual \
+    --resume-from exp/nuscenes_gs25600_v12_fixempty_ft_plan_timequery_residual/checkpoints/epoch_15.pth \
     --vis-gaussian --vis-occ \
     --num-samples 6
 """

@@ -16,7 +16,6 @@
 #           1) 汇报所需的合法基线
 #           2) "修复后 flow 梯度全通是否仍有害"的答案
 #
-# 机器：h20-old  ssh -p 30300 root@8.130.174.55
 # GPU ：4,5,6,7（0-3 常被他人占用，勿动）
 # 用法：tmux new -s train_base_fixempty
 #       bash config/nuscenes_gs25600_base_gt_ego/train_fixempty.sh
@@ -28,8 +27,8 @@ set -euo pipefail
 
 SRC_EXP="nuscenes_gs25600_base_gt_ego"
 EXP_NAME="nuscenes_gs25600_base_gt_ego_fixempty"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-torchrun}"
 CONFIG="config/${SRC_EXP}/${SRC_EXP}.py"
 WORK_DIR="out/${EXP_NAME}"
 GPUS="4,5,6,7"

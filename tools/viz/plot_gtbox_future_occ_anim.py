@@ -10,7 +10,7 @@ This is deliberately a 2D occupancy-style view, rather than a 3D wireframe:
 same instance's future nuScenes GT boxes, then storing their center deltas.
 
 Run on H20:
-  /data/chenz/conda_env/splatting/bin/python \
+  python \
     tools/viz/plot_gtbox_future_occ_anim.py \
     --pkl data/nuscenes_cam/nuscenes_infos_val_gaussian_ad_v4.pkl \
     --data-root . --index -1 \

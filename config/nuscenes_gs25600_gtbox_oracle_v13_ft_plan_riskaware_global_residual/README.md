@@ -32,7 +32,7 @@ checkpoints, and experiment directories are not changed.
 ## Commands
 
 ```bash
-cd /data/xinyao/navsim_workspace/GaussianAD
+# Run from the repository root.
 bash config/nuscenes_gs25600_gtbox_oracle_v13_ft_plan_riskaware_global_residual/train_riskaware_global_residual.sh
 ```
 

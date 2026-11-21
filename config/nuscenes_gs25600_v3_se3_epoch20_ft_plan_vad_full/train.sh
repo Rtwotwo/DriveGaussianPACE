@@ -2,11 +2,13 @@
 set -euo pipefail
 
 CFG="nuscenes_gs25600_v3_se3_epoch20_ft_plan_vad_full"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-PYTHON="/data/chenz/conda_env/splatting/bin/python"
-TORCHRUN="/data/chenz/conda_env/splatting/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+cd "${REPO}"
+export PYTHONPATH="${PWD}${PYTHONPATH:+:${PYTHONPATH}}"
+PYTHON="${PYTHON:-python}"
+TORCHRUN="${TORCHRUN:-torchrun}"
 CONFIG="config/${CFG}/${CFG}.py"
-WORK_DIR="exp/${CFG}"
+WORK_DIR="${WORK_DIR:-exp/${CFG}}"
 SOURCE_CKPT="${SOURCE_CKPT:-exp/nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full/checkpoints/epoch_20.pth}"
 FRONTEND_CKPT="${FRONTEND_CKPT:-${WORK_DIR}/bootstrap/epoch_20_frontend_only.pth}"
 
@@ -31,7 +33,6 @@ if [[ -z "${LR:-}" ]]; then
   esac
 fi
 
-cd "${REPO}"
 mkdir -p "${WORK_DIR}/bootstrap"
 if [[ ! -f "${FRONTEND_CKPT}" ]]; then
   "${PYTHON}" "config/${CFG}/prepare_frontend_checkpoint.py" \

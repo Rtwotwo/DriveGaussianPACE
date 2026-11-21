@@ -26,8 +26,8 @@
 set -euo pipefail
 
 EXP_NAME="nuscenes_gs25600_base_plan_new"
-REPO="/data/chenz/GaussianAD"
-PY="/data/chenz/conda_env/splatting/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+PY="${PY:-torchrun}"
 CONFIG="config/${EXP_NAME}/${EXP_NAME}.py"
 WORK_DIR="out/${EXP_NAME}"
 INIT_FROM="out/nuscenes_gs25600_base_gt_ego_fixempty/checkpoints/epoch_15.pth"

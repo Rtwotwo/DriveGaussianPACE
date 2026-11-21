@@ -12,7 +12,7 @@ base_gt_ego_fixempty（current 15.10 / FutAvg 8.33）是修复 empty-gaussian bu
   3. flow_grad_scale=0.0（与参考 v12_fixempty_ft_plan 对齐：
      未来帧只训 offset，当前帧高斯完全受保护，由 Occ+Det 决定）。
 
-【参照】/data/xinyao/navsim_workspace/GaussianAD/exp/nuscenes_gs25600_v12_fixempty_ft_plan
+【参照】exp/nuscenes_gs25600_v12_fixempty_ft_plan
   （use_plan_ego=True + warmup=2 + unfreeze map/plan + MapLoss/PlanLoss
    + flow_grad_scale=0.0，在 v12_fixempty 上续训，current 17.58→18.97）
 

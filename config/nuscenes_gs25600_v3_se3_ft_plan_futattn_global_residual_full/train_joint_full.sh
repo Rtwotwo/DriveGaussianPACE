@@ -3,10 +3,12 @@ set -euo pipefail
 
 CFG_NAME="nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full"
 EXP_NAME="${CFG_NAME}"
-REPO="/data/xinyao/navsim_workspace/GaussianAD"
-TORCHRUN="/data/chenz/conda_env/splatting/bin/torchrun"
+REPO="${REPO:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)}"
+cd "${REPO}"
+export PYTHONPATH="${PWD}${PYTHONPATH:+:${PYTHONPATH}}"
+TORCHRUN="${TORCHRUN:-torchrun}"
 CONFIG="config/${CFG_NAME}/${CFG_NAME}.py"
-WORK_DIR="exp/${EXP_NAME}"
+WORK_DIR="${WORK_DIR:-exp/${EXP_NAME}}"
 
 # V3-SE3 requires batch_size=1 per GPU.  Eight DDP workers therefore give
 # global_batch=8 without changing the model-side batch dimension.
@@ -36,7 +38,6 @@ export PLAN_DIRECT_BUDGET="${PLAN_DIRECT_BUDGET:-6400}"
 # Use a positive value only for a separate joint-gradient ablation.
 export PLAN_FUTURE_GRAD_SCALE="${PLAN_FUTURE_GRAD_SCALE:-0.0}"
 
-cd "${REPO}"
 mkdir -p "${WORK_DIR}"
 
 {
@@ -52,8 +53,8 @@ mkdir -p "${WORK_DIR}"
   echo "plan input : predicted Future Gaussian (current 25600 + direct ${PLAN_DIRECT_BUDGET})"
   echo "plan->V3 grad scale: ${PLAN_FUTURE_GRAD_SCALE}"
   echo "gpus       : ${GPUS} (nproc=${NPROC}, port=${MASTER_PORT})"
-  echo "git branch : $(git rev-parse --abbrev-ref HEAD)"
-  echo "git commit : $(git rev-parse HEAD)"
+  echo "git branch : $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo unavailable)"
+  echo "git commit : $(git rev-parse HEAD 2>/dev/null || echo unavailable)"
 } | tee -a "${WORK_DIR}/launch_history.log"
 
 CUDA_VISIBLE_DEVICES="${GPUS}" "${TORCHRUN}" \

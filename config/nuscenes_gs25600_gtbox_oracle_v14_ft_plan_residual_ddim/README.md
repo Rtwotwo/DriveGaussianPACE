@@ -13,7 +13,7 @@ config/nuscenes_gs25600_gtbox_oracle_v12_ft_plan_futattn_global_residual/
 服务器上的预期权重路径为：
 
 ```text
-/data/xinyao/navsim_workspace/GaussianAD/exp/
+exp/
   nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/
   checkpoints/epoch_15.pth
 ```
@@ -30,8 +30,8 @@ v14 使用 `load_from` 做 **weights-only 初始化**，并强制
 推荐先执行：
 
 ```bash
-cd /data/xinyao/navsim_workspace/GaussianAD
-export VERIFIED_V12_CHECKPOINT=/data/xinyao/navsim_workspace/GaussianAD/exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth
+# Run from the repository root.
+export VERIFIED_V12_CHECKPOINT=exp/nuscenes_gs25600_v12_fixempty_ft_plan_futattn_global_residual/checkpoints/epoch_15.pth
 python config/nuscenes_gs25600_gtbox_oracle_v14_ft_plan_residual_ddim/validate_v14.py
 ```
 

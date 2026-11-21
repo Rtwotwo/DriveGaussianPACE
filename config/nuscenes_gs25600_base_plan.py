@@ -1,1 +1,2 @@
-/data/alg-model-datavol-0/chenz/GaussianAD/out/nuscenes_gs25600_base_plan
+# Compatibility entry point for the base planning experiment.
+_base_ = ["./nuscenes_gs25600_base_plan/nuscenes_gs25600_base_plan.py"]
