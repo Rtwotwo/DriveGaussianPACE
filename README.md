@@ -1,71 +1,92 @@
-# GaussPACE
+<h1 align="center">GaussPACE<br>Physics-Constrained Gaussian Propagation and Completion for Future Occupancy Forecasting</h1>
 
-**Physics-Constrained Gaussian Propagation and Completion for Future Occupancy Forecasting**
+<p align="center">
+  <a href="#method">Method</a> ·
+  <a href="#nuscenes-results">Results</a> ·
+  <a href="docs/installation.md">Installation</a> ·
+  <a href="docs/data.md">Data and weights</a> ·
+  <a href="config/README.md">Configurations</a>
+</p>
 
-A vehicle moving forward brings new regions into view. Moving the Gaussians that describe the current scene can explain where existing objects go, but leaves little support for regions that were barely observed. GaussPACE forecasts occupancy with two sets of 3D Gaussians. One propagates the represented scene using motion states and a physically regularized rollout. The other predicts additional primitives from camera history at queries conditioned on future ego pose. The occupancy head combines both sets in the coordinate frame of each forecast.
+**GaussPACE** predicts how a 3D driving scene will be occupied over the next three seconds. As the ego vehicle moves, new regions enter the forecast grid. Moving the Gaussians already in the scene can track a passing car, but leaves few primitives to describe a newly visible stretch of road. GaussPACE therefore learns both where existing Gaussians move and where to add new ones.
 
-This repository extends [GaussianAD](https://arxiv.org/abs/2412.10371) and also includes experiments that use forecast Gaussians to plan an ego trajectory.
+## Method
 
-## Forecasting on nuScenes
+[![GaussPACE architecture showing scene encoding, Gaussian propagation and completion, future occupancy, and the separate planning adapter](docs/figures/gausspace-overview.png)](docs/figures/gausspace-overview.png)
 
-The occupancy experiment uses four frames from six cameras, current-frame box annotations for motion conditioning, and future ego poses for alignment and completion. These conditioning inputs matter when comparing the reported scores with a camera-only deployment setting. The model predicts a 120 × 120 × 8 occupancy grid at 0.5 m resolution and forecasts six steps at 0.5 s intervals.
+- **Encode the scene (a).** Four frames from each of six cameras provide the current 3D Gaussians and the image features used to forecast the scene.
+- **Propagate and complete (b–c).** Current box annotations guide the motion split. Static Gaussians stay in place, while moving Gaussians follow a rollout with bounded acceleration and yaw rate. A second branch uses future ego poses to locate entering regions and camera history to predict their geometry and semantics. At each half-second step, the model combines the propagated and newly active Gaussians in the future ego frame and renders a 120 × 120 × 8 grid with 0.5 m voxels.
+- **Plan from predicted Gaussians (d).** The planning adapter estimates ego motion from history. The planner attends to predicted Gaussian features at individual steps and across the horizon, then refines each waypoint with a learned gate. The scene illustrations above are schematic.
 
-The GaussPACE manuscript reports the following results on the nuScenes validation split with SurroundOcc labels. Values are percentages. The final column averages the **1, 2 and 3 s** endpoints.
+## nuScenes results
 
-| Metric | Current | 1 s | 2 s | 3 s | Future endpoint mean |
+The manuscript reports these occupancy scores on the **nuScenes validation split** with SurroundOcc labels, using current-frame box annotations and future ego poses. Averaged over the 1, 2 and 3 s forecasts, GaussPACE reaches **20.36% semantic mIoU** and **32.98% occupied IoU**.
+
+| Metric (%) | Current | 1 s | 2 s | 3 s | Mean at 1, 2 and 3 s |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Semantic mIoU | 27.20 | 23.42 | 20.27 | 17.38 | **20.36** |
 | Occupied IoU | 39.94 | 36.56 | 33.07 | 29.31 | **32.98** |
 
-The evaluator also prints an average over all **six** future steps. Use its individual 1, 2 and 3 s rows to compute the endpoint mean in the table.
+To compare an evaluation run with the last column, average the three endpoint rows in its log. The evaluator's `Future avg 0.5~3.0s` line includes all six half-second steps.
 
-## Run the occupancy experiment
+## Start here
 
-1. Build the Python environment and CUDA operators using the [installation guide](docs/installation.md).
-2. Prepare the [data, metadata and backbone initialization](docs/data.md).
-3. From the repository root, train the [full-data V3-SE3 configuration](config/nuscenes_gs25600_v3_se3_full/nuscenes_gs25600_v3_se3_full.py) on one eight-GPU node:
+```bash
+git clone https://github.com/Rtwotwo/DriveGaussianPACE.git
+cd DriveGaussianPACE
+```
+
+1. [Install the Python environment and build the CUDA operators](docs/installation.md).
+2. [Prepare nuScenes, SurroundOcc labels, metadata and backbone weights](docs/data.md). The reference runs use v4 metadata. The included converter produces v6.
+3. Choose a workflow below. Training starts from the R101 DCN FCOS3D backbone. Evaluation requires a trained full-model checkpoint. This repository currently distributes the configurations and launchers without GaussPACE checkpoint weights.
+
+## Evaluate an occupancy checkpoint
+
+After setup, run from the repository root. This example evaluates epoch 20 from the default occupancy training directory on one GPU.
 
 ```bash
 OCC=config/nuscenes_gs25600_v3_se3_full
-bash "$OCC/train.sh"
+GPUS=0 EPOCH=20 bash "$OCC/test.sh"
 ```
 
-The reference schedule uses AdamW, a learning rate of `2e-4`, one sample per GPU and 20 epochs. Validation runs every four epochs. Outputs are written to `exp/nuscenes_gs25600_v3_se3_full/`. The trainer checks the work directory for `latest.pth` on startup. Set `WORK_DIR` to a new directory for an independent run.
+For a checkpoint stored elsewhere, set `CKPT` to its path. The evaluator loads the model strictly and writes current and per-horizon IoU to `exp/nuscenes_gs25600_v3_se3_full/test_epoch_20_occ_console.log` with the settings above.
 
-To evaluate a trained occupancy checkpoint on one visible GPU:
+## Training and planning
+
+| Experiment | What it trains | Initialization |
+| --- | --- | --- |
+| [Occupancy forecasting](config/nuscenes_gs25600_v3_se3_full/) | Current and future occupancy with detection and map supervision | R101 backbone |
+| [Joint occupancy and planning](config/nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full/) | Scene forecasting and a planner that attends to future Gaussians | R101 backbone |
+| [Frozen frontend with a VAD planner](config/nuscenes_gs25600_v3_se3_epoch20_ft_plan_vad_full/) | A planning backend on top of a frozen perception model | Compatible trained frontend extracted from a checkpoint |
+
+Train the occupancy model on one eight-GPU node. The reference schedule uses AdamW with a learning rate of `2e-4`, one sample per GPU and 20 epochs. Validation runs every four epochs.
 
 ```bash
-OCC=config/nuscenes_gs25600_v3_se3_full
-GPUS=0 CKPT=exp/nuscenes_gs25600_v3_se3_full/checkpoints/epoch_20.pth \
-  bash "$OCC/test.sh"
+bash config/nuscenes_gs25600_v3_se3_full/train.sh
 ```
 
-The evaluator loads the checkpoint strictly and reports current and per-horizon semantic and occupied IoU. The R101 file used to initialize training contains backbone weights. Evaluation requires a trained full-model checkpoint.
+The trainer looks for `latest.pth` in the work directory on startup. Set `WORK_DIR` to a fresh directory to start an independent run.
 
-## Planning with forecast Gaussians
-
-The joint experiment lets the planner attend to a bank of Gaussians predicted from the observed history. One branch attends to each future step separately. A second branch attends across the horizon and proposes a correction to the trajectory. A learned gate scales this correction at each waypoint. The planning interface keeps the occupancy branch's privileged conditioning inputs out of the planner forward pass.
+To train and evaluate the joint planning model, use its matching pair of launchers.
 
 ```bash
 PLAN=config/nuscenes_gs25600_v3_se3_ft_plan_futattn_global_residual_full
 bash "$PLAN/train_joint_full.sh"
-EPOCH=20 GPUS=0 bash "$PLAN/test_joint_full.sh"
+GPUS=0 EPOCH=20 bash "$PLAN/test_joint_full.sh"
 ```
-
-This recipe trains the occupancy, map and planning components together from R101 initialization. For the frozen-frontend VAD comparison and older planner variants, see the [configuration guide](config/README.md).
 
 ## Repository layout
 
-| Path | Purpose |
+| Path | Contents |
 | --- | --- |
-| [config/](config/) | MMEngine experiment definitions, launchers and evaluators |
-| [dataset/](dataset/) | nuScenes scene loading, transforms and planning metrics |
-| [model/](model/) | Gaussian lifters, temporal encoders, occupancy heads, planners and native operators |
-| [loss/](loss/) | Occupancy, motion, detection, map and trajectory objectives |
-| [tools/data/](tools/data/) | Annotation conversion and inspection |
-| [tools/viz/](tools/viz/) | Utilities for inspecting predictions |
-| [train.py](train.py) | Training, validation and checkpoint management |
+| [config/](config/) | Experiment definitions, launchers and evaluators |
+| [model/](model/) | Gaussian encoders, occupancy heads, planners and CUDA operators |
+| [dataset/](dataset/) and [loss/](loss/) | nuScenes loaders, transforms, planning metrics and training objectives |
+| [tools/data/](tools/data/) and [tools/viz/](tools/viz/) | Metadata preparation and prediction visualization |
+| [train.py](train.py) | Training, validation and checkpoint handling |
 
-## Attribution and licensing
+## Acknowledgements and license
 
-GaussPACE builds on GaussianAD and the OpenMMLab ecosystem. Experiments use [nuScenes](https://www.nuscenes.org/nuscenes) and [SurroundOcc](https://github.com/weiyithu/SurroundOcc) annotations. The repository carries an [Apache-2.0 license](LICENSE). Vendored components retain their own notices. In particular, the [local aggregation extension](model/head/localagg/setup.py) carries an Inria/GRAPHDECO non-commercial research and evaluation notice. Its header refers to a separate `LICENSE.md`. That document is missing from this source tree. The extension's redistribution terms still need to be confirmed before public release.
+GaussPACE builds on [GaussianAD](https://github.com/wzzheng/GaussianAD) and the OpenMMLab ecosystem. The occupancy experiments use [nuScenes](https://www.nuscenes.org/nuscenes) and [SurroundOcc](https://github.com/weiyithu/SurroundOcc).
+
+The repository includes an [Apache 2.0 license](LICENSE). The [local aggregation extension](model/head/localagg/setup.py) carries a separate Inria/GRAPHDECO non-commercial research and evaluation notice. Its header references a `LICENSE.md` that is missing from this tree, so redistribution terms for that extension remain unconfirmed.
