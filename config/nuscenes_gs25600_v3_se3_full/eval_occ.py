@@ -3,6 +3,7 @@
 import argparse
 import os
 import os.path as osp
+import sys
 import time
 import warnings
 
@@ -14,6 +15,12 @@ from mmengine.logging import MMLogger
 from mmengine.runner import set_random_seed
 from mmseg.models import build_segmentor
 
+
+# The evaluator lives two levels below the repository root.  Put that exact
+# checkout first so an environment-level GaussianAD install cannot shadow it.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 warnings.filterwarnings('ignore')
 
